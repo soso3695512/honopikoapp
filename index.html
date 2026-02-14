@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年専用・パーソナル占いアプリ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title"><span class="title-icon">✦</span> 2026年専用・パーソナル占いアプリ <span class="title-icon">✦</span>
+            </h1>
+
+            <!-- About Card -->
+            <div class="about-card">
+                <p class="about-main">本占いアプリは、大賢者ソッソより賜った──<br>魔法使い <span class="highlight-name">ほのピコ</span> の専用アプリです。
+                </p>
+                <p class="about-sub">2026年の毎日（00:00 UT基準）の運勢を、スコアと星の配置から可視化します。</p>
+            </div>
+
+            <!-- Date Navigation -->
+            <div class="date-controls">
+                <button id="prevDay" class="nav-btn" aria-label="前日">◀</button>
+                <input type="date" id="dateInput" class="date-input" min="2026-01-01" max="2026-12-31">
+                <button id="nextDay" class="nav-btn" aria-label="翌日">▶</button>
+            </div>
+
+            <!-- Overall Fortune Judgment -->
+            <div id="fortuneJudgment" class="fortune-judgment" style="display: none;">
+                <div class="fortune-rank-container">
+                    <span class="fortune-label">今日の総合</span>
+                    <span id="fortuneRank" class="fortune-rank">中吉</span>
+                </div>
+                <p id="fortuneMessage" class="fortune-message">バランスの取れた一日。平常心を大切にしましょう。</p>
+            </div>
+        </header>
+
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>データを読み込み中...</p>
+        </div>
+
+        <!-- Main Content -->
+        <main id="mainContent" class="main-content" style="display: none;">
+            <!-- How to Read Section (Collapsible) -->
+            <section class="how-to-read">
+                <button id="toggleHowTo" class="how-to-toggle" aria-expanded="false">
+                    <span class="toggle-icon">▼</span> この画面の見方
+                </button>
+                <div id="howToContent" class="how-to-content" style="display: none;">
+                    <div class="how-to-grid">
+                        <div class="how-to-item">
+                            <h4>📊 スコアとは</h4>
+                            <p>0〜100の数値で、その日の運勢の強さを示します。高いほど追い風、低いほど慎重に行動しましょう。</p>
+                        </div>
+                        <div class="how-to-item">
+                            <h4>✦ 調和 / 摩擦</h4>
+                            <p><strong>調和</strong>：ポジティブな影響。チャンスや後押しのタイミング。<br><strong>摩擦</strong>：注意が必要。慎重な判断を心がけましょう。
+                            </p>
+                        </div>
+                        <div class="how-to-item">
+                            <h4>🌟 orb（オーブ）</h4>
+                            <p>アスペクトの正確さを示す数値。小さいほど影響が強く、ピンポイントで作用します。</p>
+                        </div>
+                        <div class="how-to-item">
+                            <h4>🔮 ASC・MC等</h4>
+                            <p><strong>ASC（上昇宮）</strong>：自分の印象や行動パターン<br><strong>MC（天頂）</strong>：社会的立場や目標</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Aspects Section -->
+            <section class="key-aspects-section">
+                <h2 class="section-title">✨ 今日のキーアスペクト（影響トップ3）</h2>
+                <div id="keyAspectsList" class="key-aspects-list">
+                    <!-- Top 3 aspects will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Left Column: Score Panel -->
+                <div class="score-panel">
+                    <h2 class="panel-title">今日の運勢スコア</h2>
+
+                    <!-- Circular Gauge -->
+                    <div class="gauge-container">
+                        <svg class="gauge" viewBox="0 0 200 200">
+                            <circle class="gauge-bg" cx="100" cy="100" r="85" />
+                            <circle id="gaugeProgress" class="gauge-progress" cx="100" cy="100" r="85" />
+                            <text id="gaugeScore" class="gauge-text" x="100" y="100" text-anchor="middle"
+                                dominant-baseline="middle">0</text>
+                            <text id="gaugeLabel" class="gauge-label" x="100" y="130" text-anchor="middle">状態</text>
+                        </svg>
+                    </div>
+
+                    <!-- Mini Chart -->
+                    <div class="chart-container">
+                        <h3 class="chart-title">直近14日間の推移</h3>
+                        <canvas id="trendChart" width="400" height="150"></canvas>
+                    </div>
+
+                    <!-- Action Guide (Enhanced) -->
+                    <div class="action-guide">
+                        <h3 class="guide-title">🌙 行動ガイド</h3>
+                        <div class="guide-section">
+                            <h4 class="guide-heading good">✓ やると良いこと</h4>
+                            <ul id="actionGood" class="guide-list"></ul>
+                        </div>
+                        <div class="guide-section">
+                            <h4 class="guide-heading avoid">✗ 避けると良いこと</h4>
+                            <ul id="actionAvoid" class="guide-list"></ul>
+                        </div>
+                        <div class="guide-section">
+                            <h4 class="guide-heading awareness">◎ 意識すること</h4>
+                            <ul id="actionAware" class="guide-list"></ul>
+                        </div>
+                    </div>
+
+                    <!-- AI Analysis (Refined) -->
+                    <div class="ai-analysis">
+                        <h3 class="analysis-title">AI解説</h3>
+                        <div id="aiContent" class="analysis-content">
+                            <p class="theme" id="aiTheme"></p>
+                            <div class="keywords">
+                                <h4>キーワード</h4>
+                                <div id="aiKeywords" class="keyword-tags"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: All Aspects Panel -->
+                <div class="whispers-panel">
+                    <h2 class="panel-title">今日の星のささやき（全アスペクト）</h2>
+                    <div id="aspectsList" class="aspects-list">
+                        <!-- Aspect cards will be inserted here -->
+                    </div>
+                    <button id="showMoreAspects" class="show-more-btn" style="display: none;">
+                        <span id="showMoreText">もっと見る</span> <span id="showMoreIcon">▼</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="about">
+                <h3>出生情報 <span class="about-note">（ほのピコ専用データ）</span></h3>
+                <p id="birthInfo"></p>
+                <p class="note">※このアプリは2026年専用・00UT基準で作成されています</p>
+            </div>
+        </footer>
+
+        <!-- No Data Message -->
+        <div id="noData" class="no-data" style="display: none;">
+            <p>選択された日付のデータがありません</p>
+        </div>
+    </div>
+
+    <!-- Aspect Detail Modal -->
+    <div id="aspectModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal" aria-label="閉じる">&times;</button>
+            <div id="modalBody" class="modal-body">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
