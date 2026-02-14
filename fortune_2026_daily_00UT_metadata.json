@@ -1,0 +1,96 @@
+{
+  "basis": {
+    "year": 2026,
+    "sample_time_ut": "00:00",
+    "sample_time_jst": "09:00",
+    "ephemeris_alignment": "Astrodienst/Astro.com ephemeris tables use 00:00 UT"
+  },
+  "natal": {
+    "birth_date": "1993-09-09",
+    "birth_time_jst": "17:03",
+    "birth_time_ut": "08:03",
+    "latitude": 37.482094,
+    "longitude_east": 138.991699,
+    "house_system": "P",
+    "positions_deg": {
+      "Sun": 166.65589234179726,
+      "Moon": 77.43600826998464,
+      "Mercury": 176.32500987799455,
+      "Venus": 135.1506005259154,
+      "Mars": 198.18174124145122,
+      "Jupiter": 196.77797434053056,
+      "Saturn": 325.47213980056756,
+      "Uranus": 288.364722710711,
+      "Neptune": 288.49326851267233,
+      "Pluto": 233.1145760585862,
+      "ASC": 325.71325444871434,
+      "MC": 249.7801471183738
+    }
+  },
+  "scoring": {
+    "planets_transit": [
+      "Sun",
+      "Moon",
+      "Mercury",
+      "Venus",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune",
+      "Pluto"
+    ],
+    "points_natal": [
+      "Sun",
+      "Moon",
+      "Mercury",
+      "Venus",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune",
+      "Pluto",
+      "ASC",
+      "MC"
+    ],
+    "aspects_deg": [
+      0,
+      60,
+      90,
+      120,
+      180
+    ],
+    "aspect_multipliers": {
+      "0": 1.0,
+      "60": 0.6,
+      "90": -0.9,
+      "120": 0.9,
+      "180": -1.0
+    },
+    "weights": {
+      "Sun": 2.0,
+      "Moon": 2.0,
+      "Mercury": 1.5,
+      "Venus": 1.5,
+      "Mars": 1.8,
+      "Jupiter": 2.5,
+      "Saturn": 3.0,
+      "Uranus": 2.8,
+      "Neptune": 2.8,
+      "Pluto": 3.2,
+      "ASC": 2.5,
+      "MC": 2.5
+    },
+    "orb_deg": {
+      "moon_if_either": 4.0,
+      "others": 6.0
+    },
+    "top_n_aspects_saved": 12,
+    "normalization": {
+      "method": "min_max_0_100",
+      "raw_min": -36.38561563741354,
+      "raw_max": 27.83554163970649
+    }
+  }
+}
